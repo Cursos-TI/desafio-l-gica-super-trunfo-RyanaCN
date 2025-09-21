@@ -57,16 +57,12 @@ int main(){
  densidade2= populacao2/area2;
  capita1= pib1/populacao1;
  capita2= pib2/populacao2;
+ inverso1 = area1 / (float)populacao1;
+ inverso2 = area2 / (float)populacao2;
+ superpoder1 = populacao1 + area1 + pib1 + turisticos1 + inverso1 + capita1;
+ superpoder2 = populacao2 + area2 + pib2 + turisticos2 + inverso2 + capita2;
 
- //Calculos super poder
-
- inverso1=  area1/(float)populacao1;
- inverso2=  area2/(float)populacao2;
-
- superpoder1= (float)populacao1+area1+pib1+turisticos1+inverso1+capita1;
- superpoder2= (float)populacao2+area2+pib2+turisticos2+inverso2+capita2;
-
-
+ 
 //Leitura Cartas
    printf("\nCARTA 1:\n");
    printf("Estado: %c\n",estado1);
@@ -105,99 +101,73 @@ if (area1>area2){
    
 
 
-   //MENU INTERATIVO
+    // Menu de atributos
+    int atributo1, atributo2;
+    float valor1_carta1, valor1_carta2;
+    float valor2_carta1, valor2_carta2;
+    float soma1, soma2;
 
-//VARIAVEL
-int escolhajogador;
+    printf("\nEscolha o primeiro atributo para comparar:\n");
+    printf("1 - População\n2 - Área\n3 - PIB\n4 - Pontos turísticos\n5 - Densidade populacional\n");
+    scanf("%d", &atributo1);
 
-printf("\n #### ESCOLHA O ATRIBUTO QUE DESEJA COMPARAR ####\n");
-printf("1-População\n");
-printf("2-Área\n");
-printf("3-Pib\n");
-printf("4-Pontos turisticos\n");
-printf("5-Densidade populacional\n");
-scanf("%d", &escolhajogador);
+    // Menu dinâmico para segundo atributo
+    printf("\nEscolha o segundo atributo (diferente do primeiro):\n");
+    for (int i = 1; i <= 5; i++) {
+        if (i != atributo1) {
+            switch (i) {
+                case 1: printf("1 - População\n"); break;
+                case 2: printf("2 - Área\n"); break;
+                case 3: printf("3 - PIB\n"); break;
+                case 4: printf("4 - Pontos turísticos\n"); break;
+                case 5: printf("5 - Densidade populacional\n"); break;
+            }
+        }
+    }
+    scanf("%d", &atributo2);
 
+    // Obter valores dos atributos com switch
+    switch (atributo1) {
+        case 1: valor1_carta1 = populacao1; valor1_carta2 = populacao2; break;
+        case 2: valor1_carta1 = area1; valor1_carta2 = area2; break;
+        case 3: valor1_carta1 = pib1; valor1_carta2 = pib2; break;
+        case 4: valor1_carta1 = turisticos1; valor1_carta2 = turisticos2; break;
+        case 5: valor1_carta1 = densidade1; valor1_carta2 = densidade2; break;
+        default: printf("Atributo 1 inválido!\n"); return 1;
+    }
 
-printf ("\nComparação : %s x %s \n", cidade1, cidade2);
+    switch (atributo2) {
+        case 1: valor2_carta1 = populacao1; valor2_carta2 = populacao2; break;
+        case 2: valor2_carta1 = area1; valor2_carta2 = area2; break;
+        case 3: valor2_carta1 = pib1; valor2_carta2 = pib2; break;
+        case 4: valor2_carta1 = turisticos1; valor2_carta2 = turisticos2; break;
+        case 5: valor2_carta1 = densidade1; valor2_carta2 = densidade2; break;
+        default: printf("Atributo 2 inválido!\n"); return 1;
+    }
 
-switch (escolhajogador){
+    // Comparações individuais
+    printf("\nComparando %s x %s\n", cidade1, cidade2);
+    printf("Atributo 1: %d | Carta 1: %.2f | Carta 2: %.2f\n", atributo1, valor1_carta1, valor1_carta2);
+    printf("Atributo 2: %d | Carta 1: %.2f | Carta 2: %.2f\n", atributo2, valor2_carta1, valor2_carta2);
 
-case 1: //POPULAÇAO
+    // Regra especial para densidade
+    float resultado1 = (atributo1 == 5) ? (valor1_carta1 < valor1_carta2 ? 1 : 0) : (valor1_carta1 > valor1_carta2 ? 1 : 0);
+    float resultado2 = (atributo2 == 5) ? (valor2_carta1 < valor2_carta2 ? 1 : 0) : (valor2_carta1 > valor2_carta2 ? 1 : 0);
 
-printf ("População: %lu x  %lu \n", populacao1, populacao2 );
+    // Soma dos atributos
+    soma1 = valor1_carta1 + valor2_carta1;
+    soma2 = valor1_carta2 + valor2_carta2;
 
-if (populacao1>populacao2){
-    printf("\nParabéns Carta 1 venceu!\n");
-}
-else if(populacao1 < populacao2){
-    printf("\nParabéns Carta 2 venceu!\n");
-}
-else{
-     printf("\nHouve um empate!\n");
-}
-break;
+    printf("\nSoma dos atributos:\nCarta 1: %.2f\nCarta 2: %.2f\n", soma1, soma2);
 
-case 2: //ÁREA
-
-printf ("Área: %2.f x  %2.f \n", area1,area2 );
-
-if (area1>area2){
-    printf("\nParabéns Carta 1 venceu!\n");
-}
-else if(area1<area2){
-    printf("\nParabéns Carta 2 venceu!\n");
-}
-else
-    printf("\nHouve um empate!\n");
-
-break;
-
-case 3: //PIB
-
-printf ("PIB : %2.f x  %2.f \n", pib1,pib2);
-
-if (pib1>pib2){
-    printf("\nParabéns Carta 1 venceu!\n");
-}
-else if(pib1<pib2){
-    printf("\nParabéns Carta 2 venceu!\n");
-}
-else
-    printf("\nHouve um empate!\n");
-
-break;
-
-case 4: //Pontos turisticos
-
-printf ("Pontos turisticos: %d x %d \n", turisticos1,turisticos2);
-
-if (turisticos1>turisticos2){
-    printf("\nParabéns Carta 1 venceu!\n");
-}
-else if(turisticos1<turisticos2){
-    printf("\nParabéns Carta 2 venceu!\n");
-}
-else
-    printf("\nHouve um empate!\n");
-
-break;
-
-case 5: //Densidade demografica
-
-printf ("Densidade populacional: %f x %f \n", densidade1,densidade2);
-
-if (densidade1<densidade2){
-    printf("\nParabéns Carta 1 venceu!\n");
-}
-else if(densidade2<densidade1){
-    printf("\nParabéns Carta 2 venceu!\n");
-}
-else
-    printf("\nHouve um empate!\n");
-
-break;
+    // Resultado final
+    printf("\nResultado Final:\n");
+if (soma1 > soma2) {
+    printf("Carta 1 venceu!\n");
+} else if (soma2 > soma1) {
+    printf("Carta 2 venceu!\n");
+} else {
+    printf("Empate!\n");
 }
 
-return 0;
 }
